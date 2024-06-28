@@ -18,12 +18,10 @@ test('it will check the form value and passes on submit of form', () => {
     name: 'Biswa',
     email: 'biswa@yopmail.com'
   };
-  const userDetails = [];
-  const cb = (...args) => {
-    userDetails.push(args);
-  };
+  
+  const mock = jest.fn();
 
-  render(<UserForm onUserAdd={(args)=> cb(args)} />);
+  render(<UserForm onUserAdd={mock} />);
 
   const [nameInput, emailInput] = screen.getAllByRole('textbox');
 
@@ -36,6 +34,6 @@ test('it will check the form value and passes on submit of form', () => {
   const button = screen.getByRole('button');
   userEvent.click(button);
 
-  expect(userDetails[0][0].name).toEqual(name);
-  expect(userDetails[0][0].email).toEqual(email);
+  expect(mock).toHaveBeenCalled();
+  expect(mock).toHaveBeenCalledWith({ name, email });
 });
