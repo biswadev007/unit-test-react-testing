@@ -43,3 +43,23 @@ test('it will check the form value and passes on submit of form', () => {
   expect(mock).toHaveBeenCalled();
   expect(mock).toHaveBeenCalledWith({ name, email });
 });
+
+test('expect the form to be empty after submitting', ()=> {
+  render(<UserForm onUserAdd={()=> {}} />);
+
+  const nameInput = screen.getByRole('textbox', { name: /name/i });
+  const emailInput = screen.getByRole('textbox', { name: /email/i });
+
+  userEvent.click(nameInput);
+  userEvent.keyboard('jane');
+
+  userEvent.click(emailInput);
+  userEvent.keyboard('jane@jane.com');
+
+  const button = screen.getByRole('button', { name: /add user/i });
+
+  userEvent.click(button);
+
+  expect(nameInput).toHaveValue('');
+  expect(emailInput).toHaveValue('');
+});
